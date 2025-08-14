@@ -1230,12 +1230,13 @@ export default class Carousel extends Component {
         } : undefined;
 
         const mainDimension = vertical ? { height: itemHeight } : { width: itemWidth };
-        const specificProps = this._needsScrollView() ? {
-            key: keyExtractor ? keyExtractor(item, index) : this._getKeyExtractor(item, index)
-        } : {};
+        const key = (() => {
+            if (!this._needsScrollView()) return undefined;
+            return keyExtractor?.(item, index) ?? this._getKeyExtractor(item, index);
+          })();
 
         return (
-            <Component style={[mainDimension, slideStyle, animatedStyle]} pointerEvents={'box-none'} {...specificProps}>
+            <Component style={[mainDimension, slideStyle, animatedStyle]} pointerEvents={'box-none'} key={key}>
                 { renderItem({ item, index }, parallaxProps) }
             </Component>
         );
@@ -1343,7 +1344,7 @@ export default class Carousel extends Component {
     }
 
     render () {
-        const { data, renderItem, useScrollView } = this.props;
+        const { data, renderItem, useScrollView, key, ...otherProps } = this.props;
 
         if (!data || !renderItem) {
             return null;
@@ -1351,14 +1352,14 @@ export default class Carousel extends Component {
 
         const props = {
             ...this._getComponentOverridableProps(),
-            ...this.props,
+            ...otherProps,
             ...this._getComponentStaticProps()
         };
 
         const ScrollViewComponent = typeof useScrollView === 'function' ? useScrollView : AnimatedScrollView
 
         return this._needsScrollView() ? (
-            <ScrollViewComponent {...props}>
+            <ScrollViewComponent key={key} {...props}>
                 {
                     this._getCustomData().map((item, index) => {
                         return this._renderItem({ item, index });
@@ -1366,7 +1367,7 @@ export default class Carousel extends Component {
                 }
             </ScrollViewComponent>
         ) : (
-            <AnimatedFlatList {...props} />
+            <AnimatedFlatList key={key} {...props} />
         );
     }
 }
