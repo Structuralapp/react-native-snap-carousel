@@ -1230,12 +1230,13 @@ export default class Carousel extends Component {
         } : undefined;
 
         const mainDimension = vertical ? { height: itemHeight } : { width: itemWidth };
-        const specificProps = this._needsScrollView() ? {
-            key: keyExtractor ? keyExtractor(item, index) : this._getKeyExtractor(item, index)
-        } : {};
+        const key = (() => {
+            if (!this._needsScrollView()) return undefined;
+            return keyExtractor?.(item, index) ?? this._getKeyExtractor(item, index);
+          })();
 
         return (
-            <Component style={[mainDimension, slideStyle, animatedStyle]} pointerEvents={'box-none'} {...specificProps}>
+            <Component style={[mainDimension, slideStyle, animatedStyle]} pointerEvents={'box-none'} key={key}>
                 { renderItem({ item, index }, parallaxProps) }
             </Component>
         );
