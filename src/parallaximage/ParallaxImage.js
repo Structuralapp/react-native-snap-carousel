@@ -184,6 +184,7 @@ export default class ParallaxImage extends Component {
         return (
             <AnimatedImageComponent
               {...other}
+              key={key}
               style={[styles.image, style, requiredStyles, dynamicStyles]}
               onLoad={this._onLoad}
               onError={status !== 3 ? this._onError : undefined} // prevent infinite-loop bug

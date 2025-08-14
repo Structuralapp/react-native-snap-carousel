@@ -1358,7 +1358,7 @@ export default class Carousel extends Component {
         const ScrollViewComponent = typeof useScrollView === 'function' ? useScrollView : AnimatedScrollView
 
         return this._needsScrollView() ? (
-            <ScrollViewComponent {...props}>
+            <ScrollViewComponent key={key} {...props}>
                 {
                     this._getCustomData().map((item, index) => {
                         return this._renderItem({ item, index });
@@ -1366,7 +1366,7 @@ export default class Carousel extends Component {
                 }
             </ScrollViewComponent>
         ) : (
-            <AnimatedFlatList {...props} />
+            <AnimatedFlatList key={key} {...props} />
         );
     }
 }
