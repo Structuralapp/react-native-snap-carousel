@@ -1343,7 +1343,7 @@ export default class Carousel extends Component {
     }
 
     render () {
-        const { data, renderItem, useScrollView } = this.props;
+        const { data, renderItem, useScrollView, key, ...otherProps } = this.props;
 
         if (!data || !renderItem) {
             return null;
@@ -1351,7 +1351,7 @@ export default class Carousel extends Component {
 
         const props = {
             ...this._getComponentOverridableProps(),
-            ...this.props,
+            ...otherProps,
             ...this._getComponentStaticProps()
         };
 

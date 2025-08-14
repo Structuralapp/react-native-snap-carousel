@@ -153,6 +153,7 @@ export default class ParallaxImage extends Component {
             parallaxFactor,
             style,
             AnimatedImageComponent,
+            key,
             ...other
         } = this.props;
 
